@@ -4,26 +4,11 @@
 {% extends 'base.html' %} {% block title %}Home{% endblock title %} 
 {% load static %} {% block content %}
 <div class="container">
-  <form class="explore-outlets-search mb-2 rounded overflow-hidden border mt-4 ">
-    <div class="input-group">
-      <input type="text" placeholder="Search for dishes..." class="form-control border-0">
-      <div class="input-group-append">
-        <button type="button" class="btn btn-primary">
-          <i class="icofont-search"></i>
-        </button>
-      </div>
-    </div>
-  </form>
+ 
   <div class="about">
     <div class="stikiness">
       <div class="owl-carousel owl-carousel-category owl-theme ">
-        <div class="item">
-          <div class="ace-category-item">
-            <img class="img-fluid" data-id="allitem"
-              src="https://img.freepik.com/free-vector/fast-food-illustration-set_121223-1482.jpg?w=2000" alt="">
-            <h6>All Items</h6>
-          </div>
-        </div>
+        
         
         {% for list in category %}
         {% if list.not_available == False %}
@@ -49,28 +34,12 @@
           <div class="col-xl-6 col-lg-6 col-md-6">
             <div class="bg-white rounded border shadow-sm">
               <div class="gold-members p-3 border-bottom">
-                <a>
-                  {% csrf_token %}
-                  <button
-                    data-price= "{{product.price}}"
-                    data-table="{{tableno.id}}"
-                    data-product="{{product.id}}"
-                    data-action="add"
-                    {% for item in items %}
-                    {% if product.id == item.product.id %}
-                    data-quantity = {{item.quantity}}
-                    {% endif %}
-                    {% endfor %}
-                    class="btn btn-outline-primary btn-sm  float-right add-to-cart-button qrupdate-cart btn-add"
-                    id="qraddedbtn">Add</button>
-                    
-                    
-                </a>
+                <span class="float-right">Rs.{{product.price}}</span>
                 <div class="media">
                   <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
                   <div class="media-body">
                     <h6 class="mb-1">{{product.name}}</h6>
-                    <p class="text-gray mb-0">{{product.price}}</p>
+                    <p class="text-gray mb-0">{{product.category}}</p>
                   </div>
                 </div>
                 <div class="float-center d-flex justify-content-center">
@@ -80,13 +49,6 @@
                   </div>
                 <div class="float-center d-flex justify-content-center">
                   
-                  <span>{% for item in items %}
-                      {% if product.id == item.product.id %}
-                      items in cart: {{item.quantity}}
-                      {% endif %}
-                      {% endfor %}
-  
-                    </span>
                   </div>
               </div>
             </div>
@@ -105,44 +67,20 @@
           <div class="col-xl-6 col-lg-6 col-md-6">
             <div class="bg-white rounded border shadow-sm">
               <div class="gold-members p-3 border-bottom">
-                <a
-                data-price= "{{product.price}}"
-                data-table="{{tableno.id}}"
-                data-product="{{product.id}}"
-                data-action="add"
-                {% for item in items %}
-                {% if product.id == item.product.id %}
-                data-quantity = {{item.quantity}}
-                {% endif %}
-                {% endfor %}
-                id="qraddedbtn"
-                  class="btn btn-outline-primary btn-sm  float-right add-to-cart-button qrupdate-cart btn-add">Add</a>
+                <span class="float-right">Rs.{{product.price}}</span>
+
                 <div class="media">
                   <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
                   <div class="media-body">
                     <h6 class="mb-1">{{product.name}}</h6>
-                    <p class="text-gray mb-0">{{product.price}}</p>
+                    <p class="text-gray mb-0">{{product.category}}</p>
                   </div>
                 </div>
-                <div class="float-center d-flex justify-content-center">
-                  <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
-                      data-action="add" class="qrcount">
-                      </span>
-                  </div>
-                <div class="float-end d-flex justify-content-end">
-
-                <span>{% for item in items %}
-                    {% if product.id == item.product.id %}
-                    items in cart: {{item.quantity}}
-                    {% endif %}
-                    {% endfor %}
-
-                  </span>
+                
                 </div>
               </div>
             </div>
           </div>
-        </div>
         
         <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}} data-action="add"
           class="count">
@@ -253,12 +191,5 @@ aria-labelledby="addtocartLabel" aria-hidden="true">
   </div>
 </div>
 </div>
-<footer class="footer">
-  <div class="footer-content">
-    <ul class="footer-icon">
-      <li><button type="button"><a href="/"><i class="bi bi-house-heart"></i></a></button></li>
-      <li><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtocart"><i class="bi bi-cart-plus-fill"></i></button></li>
-    </ul>
-  </div>
-</footer>
+
 {% endblock content %}

@@ -1,0 +1,136 @@
+
+
+{% extends 'base.html' %} {% block title %}Home{% endblock title %} 
+{% load static %} {% block content %}
+<div class="container mycontainer">
+  <div class="header-section">
+  <form class="explore-outlets-search mb-2 rounded overflow-hidden border" method="GET" action="{% url 'search' %}">
+    <div class="input-group">
+      <input type="text" placeholder="Search for dishes..." class="form-control border-0" name='keyword'>
+      <div class="input-group-append">
+        <button type="button" class="btn btn-primary">
+          <i class="icofont-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+  <div class="about2">
+
+     <div class="innerabout">
+       <a href="{% url 'special' %}"> <img class="about-img" src="../../static/asset/images/Special.jfif" alt=""></a>
+     </div>
+     <div class="innerabout">
+      <a href="{% url 'exclusive' %}">  <img class="about-img" src="../../static/asset/images/Special.jfif" alt=""></a>
+     </div>
+
+  </div>
+
+  <div class="specialheader">
+    <h3>Frappe's Menu</h3>
+ </div>
+
+  <div class="about">
+    <div class="stikiness">
+      <div class="owl-carousel owl-carousel-category owl-theme ">
+        <div class="item">
+          <div class="ace-category-item">
+            <img class="img-fluid" data-id="allitem"
+              src="https://img.freepik.com/free-vector/fast-food-illustration-set_121223-1482.jpg?w=2000" alt="">
+            <h6>All Items</h6>
+          </div>
+        </div>
+        
+        {% for list in category %}
+        {% if list.not_available == False %}
+        <div class="item">
+          <div class="ace-category-item">
+            <img class="img-fluid" data-id="{{list.name}}" src="{{list.image.url}}" alt="">
+            <h6>{{list.name}}</h6>
+          </div>
+        </div>
+        {% else %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    
+
+    <div>
+      
+      <div class="container content active" id="allitem">
+        {% for product in products %}
+        {% if product.out_of_stock == False %}
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="bg-white rounded border shadow-sm">
+              <div class="gold-members p-3 border-bottom">
+                <span class="float-right">Rs.{{product.price}}</span>
+                <div class="media">
+                  <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
+                  <div class="media-body">
+                    <h6 class="mb-1">{{product.name}}</h6>
+                    <p class="text-gray mb-0">{{product.category}}</p>
+                  </div>
+                </div>
+                <div class="float-center d-flex justify-content-center">
+                <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                    data-action="add" class="qrcount">
+                    </span>
+                  </div>
+                <div class="float-center d-flex justify-content-center">
+                  
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  {% else %}
+  {% endif %}
+  {% endfor %}
+</div>
+      {% for list in category %}
+      <div class="container content " id="{{list.name}}">
+        {% for product in list.product_set.all %}
+        {% if product.out_of_stock == False %}
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="bg-white rounded border shadow-sm">
+              <div class="gold-members p-3 border-bottom">
+                <span class="float-right">Rs.{{product.price}}</span>
+
+                <div class="media">
+                  <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
+                  <div class="media-body">
+                    <h6 class="mb-1">{{product.name}}</h6>
+                    <p class="text-gray mb-0">{{product.category}}</p>
+                  </div>
+                </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}} data-action="add"
+          class="count">
+        </span>
+  {% else %}
+  {% endif %}
+  {% endfor %}
+</div>
+{% endfor %}
+</div>
+<div>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}

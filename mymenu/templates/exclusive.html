@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'waiter/assets/css/special.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="containers">
+
+        <h1 class="heading">Exclusive Product</h1>
+    
+        <div class="box-containers">
+            {% for list in exc %}
+            <div class="boxs">
+                <div class="offericon">
+                    <h3>{{list.discount}}% Off</h3>
+                </div>
+                <img src="{{list.product.image.url}}" alt="">
+                <h3>{{list.product.name}}</h3>
+               <h3><p style="text-decoration: line-through;">Rs.{{list.product.price}}</p> Rs.{{list.newprice}}</h3>
+
+            </div>
+            {% endfor %}
+    
+            
+    
+    
+        </div>
+    
+    </div>
+    
+</body>
+</html>

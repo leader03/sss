@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'waiter/assets/css/special.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="containers">
+
+        <h1 class="heading">Today's Special Product</h1>
+    
+        <div class="box-containers">
+            {% for list in special %}
+            <div class="boxs">
+                <img src="{{list.product.image.url}}" alt="">
+                <h3>{{list.product.name}}</h3>
+                <h3>Rs.{{list.product.price}}</h3>
+                
+            </div>
+            {% endfor %}
+    
+           
+    
+    
+        </div>
+    
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,264 @@
+
+
+
+{% extends 'base.html' %} {% block title %}Home{% endblock title %} 
+{% load static %} {% block content %}
+<div class="container">
+  <form class="explore-outlets-search mb-2 rounded overflow-hidden border mt-4 ">
+    <div class="input-group">
+      <input type="text" placeholder="Search for dishes..." class="form-control border-0">
+      <div class="input-group-append">
+        <button type="button" class="btn btn-primary">
+          <i class="icofont-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="about">
+    <div class="stikiness">
+      <div class="owl-carousel owl-carousel-category owl-theme ">
+        <div class="item">
+          <div class="ace-category-item">
+            <img class="img-fluid" data-id="allitem"
+              src="https://img.freepik.com/free-vector/fast-food-illustration-set_121223-1482.jpg?w=2000" alt="">
+            <h6>All Items</h6>
+          </div>
+        </div>
+        
+        {% for list in category %}
+        {% if list.not_available == False %}
+        <div class="item">
+          <div class="ace-category-item">
+            <img class="img-fluid" data-id="{{list.name}}" src="{{list.image.url}}" alt="">
+            <h6>{{list.name}}</h6>
+          </div>
+        </div>
+        {% else %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    
+
+    <div>
+      
+      <div class="container content active" id="allitem">
+        {% for product in results %}
+        {% if product.out_of_stock == False %}
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="bg-white rounded border shadow-sm">
+              <div class="gold-members p-3 border-bottom">
+                <a>
+                  {% csrf_token %}
+                  <button
+                    data-price= "{{product.price}}"
+                    data-table="{{tableno.id}}"
+                    data-product="{{product.id}}"
+                    data-action="add"
+                    {% for item in items %}
+                    {% if product.id == item.product.id %}
+                    data-quantity = {{item.quantity}}
+                    {% endif %}
+                    {% endfor %}
+                    class="btn btn-outline-primary btn-sm  float-right add-to-cart-button qrupdate-cart btn-add"
+                    id="qraddedbtn">Add</button>
+                    
+                    
+                </a>
+                <div class="media">
+                  <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
+                  <div class="media-body">
+                    <h6 class="mb-1">{{product.name}}</h6>
+                    <p class="text-gray mb-0">{{product.price}}</p>
+                  </div>
+                </div>
+                <div class="float-center d-flex justify-content-center">
+                <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                    data-action="add" class="qrcount">
+                    </span>
+                  </div>
+                <div class="float-center d-flex justify-content-center">
+                  
+                  <span>{% for item in items %}
+                      {% if product.id == item.product.id %}
+                      items in cart: {{item.quantity}}
+                      {% endif %}
+                      {% endfor %}
+  
+                    </span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  {% else %}
+  {% endif %}
+  {% endfor %}
+</div>
+      {% for list in category %}
+      <div class="container content " id="{{list.name}}">
+        {% for product in list.product_set.all %}
+        {% if product.out_of_stock == False %}
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="bg-white rounded border shadow-sm">
+              <div class="gold-members p-3 border-bottom">
+                <a
+                data-price= "{{product.price}}"
+                data-table="{{tableno.id}}"
+                data-product="{{product.id}}"
+                data-action="add"
+                {% for item in items %}
+                {% if product.id == item.product.id %}
+                data-quantity = {{item.quantity}}
+                {% endif %}
+                {% endfor %}
+                id="qraddedbtn"
+                  class="btn btn-outline-primary btn-sm  float-right add-to-cart-button qrupdate-cart btn-add">Add</a>
+                <div class="media">
+                  <div class="mr-3"><img src="{{product.image.url}}" alt="" style="height: 45px; width: 45px;"></div>
+                  <div class="media-body">
+                    <h6 class="mb-1">{{product.name}}</h6>
+                    <p class="text-gray mb-0">{{product.price}}</p>
+                  </div>
+                </div>
+                <div class="float-center d-flex justify-content-center">
+                  <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                      data-action="add" class="qrcount">
+                      </span>
+                  </div>
+                <div class="float-end d-flex justify-content-end">
+
+                <span>{% for item in items %}
+                    {% if product.id == item.product.id %}
+                    items in cart: {{item.quantity}}
+                    {% endif %}
+                    {% endfor %}
+
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}} data-action="add"
+          class="count">
+        </span>
+  {% else %}
+  {% endif %}
+  {% endfor %}
+</div>
+{% endfor %}
+
+</div>
+<div>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+</div>
+</div>
+</div>
+<div class="modal fade" id="addtocart" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="addtocartLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header border-bottom-0">
+      <h5 class="modal-title" id="exampleModalLabel" style="font-family: optima; color: #0d6efd;">
+        Table no.{{tableno.table_no}} Cart <button type="button" class="btn btn-success"><i class="bi bi-cart-plus-fill"></i></button>
+      </h5>
+      <div class="close-container" data-bs-dismiss="modal">
+        <div class="leftright"></div>
+        <div class="rightleft"></div>
+      </div>
+      
+    </div>
+    <div class="modal-body">
+      <table class="table table-image">
+        <thead>
+          <tr class="table-info">
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Total</th>
+            <th scope="col">Change
+            
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr class="table-success">
+            <td>{{item.product}}</td>
+            <td>{{item.product.price|floatformat:2}}</td>
+            <td>{{item.quantity}}
+              <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                    data-action="add" class="qraddcount">
+                    </span>
+                    <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                    data-action="add" class="qrremovecount">
+                    </span>
+                    <span data-price={{product.price}} data-table={{tableno.id}} data-product={{product.id}}
+                    data-action="add" class="qrorderdelete">
+                    </span>
+              <a href="#">
+                
+                <i class="bi bi-pencil-square" 
+                    style="height: 30px; width: 30px;"></i></a>
+            </td>
+            
+            
+            <td>{{item.get_qr_total}}</td>
+            <td>
+              <i data-price="{{item.product.price}}" data-table="{{tableno.id}}"
+                              data-product="{{item.product.id}}" data-action="add"
+                              class="qrupdate-item-cart bi bi-plus-circle" style="height: 30px; width: 30px"></i>
+
+                            <i data-price="{{item.product.price}}" data-table="{{tableno.id}}"
+                              data-product="{{item.product.id}}" data-action="remove"
+                              class="qrupdate-item-cart bi bi-dash-circle" style="height: 30px; width: 30px"></i>
+                            <i data-price="{{item.product.price}}" data-table="{{tableno.id}}"
+                              data-product="{{item.product.id}}" data-action="delete"
+                              class="qrupdate-item-cart bi bi-shield-fill-x" style="height: 30px; width: 30px"></i>
+                              
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end">
+        <p>
+          <b>Total Items: </b>{{order.get_qr_cart_items}}
+        </p>
+      </div>
+      <div class="d-flex justify-content-end">
+
+        <h5>Total: <span class="price text-success">{{order.get_qr_cart_total|floatformat:2}}</span></h5>
+      </div>
+    </div>
+    <div class="modal-footer border-top-0 d-flex justify-content-between">
+
+      <button type="button" class="btn btn-secondary btn_close" data-bs-dismiss="modal">Close</button>
+
+<form method="POST">
+    {% csrf_token %}
+      <button type="submit" class="btn-checkout">
+        Clear
+      </button>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+<footer class="footer">
+  <div class="footer-content">
+    <ul class="footer-icon">
+      <li><button type="button"><a href="/"><i class="bi bi-house-heart"></i></a></button></li>
+      <li><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtocart"><i class="bi bi-cart-plus-fill"></i></button></li>
+    </ul>
+  </div>
+</footer>
+{% endblock content %}
